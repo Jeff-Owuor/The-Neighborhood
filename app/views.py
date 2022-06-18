@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import logout,login,authenticate
 from .forms import RegisterForm,BusinessForm,ProfileEdit
-from .models import Profile
+from .models import Profile,Business
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -48,3 +49,20 @@ def profile(request):
             form.save()
             return redirect('profile')
     return render(request, 'app/profile.html',{"profile":profile,"form":form})
+
+@login_required(login_url='login')
+def business(request):
+    user = request.user
+    business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
+    form = BusinessForm()
+    if request.method=='POST':
+        form = BusinessForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.cleaned_data['image']
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            neighborhood = form.cleaned_data['neighborhood']
+            created = Business(image=image, name=name,email=email,neighborhood=neighborhood,user=request.user)
+            created.save()
+            
+    return render(request, 'ip4/business.html',{"title":'Business/Events','form':form,"business":business,'user':user})

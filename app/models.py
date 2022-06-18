@@ -34,9 +34,9 @@ class Profile(models.Model):
     
     
 class Business(models.Model):
-    business_image = CloudinaryField('image', null=True)
-    business_name = models.CharField(max_length=100)
-    business_email = models.EmailField()
+    image = CloudinaryField('image', null=True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     neighborhood = models.ForeignKey(Neighborhood,on_delete=models.CASCADE)
     
