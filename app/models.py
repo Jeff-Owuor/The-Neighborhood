@@ -38,7 +38,7 @@ class Business(models.Model):
     business_name = models.CharField(max_length=100)
     business_email = models.EmailField()
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    neighborhood_id = models.ForeignKey(Neighborhood,on_delete=models.CASCADE)
+    neighborhood = models.ForeignKey(Neighborhood,on_delete=models.CASCADE)
     
     def create_business(self):
         self.save()
