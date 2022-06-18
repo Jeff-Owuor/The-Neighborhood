@@ -1,10 +1,12 @@
 from django.urls import re_path,path,include
+
 from .views import index,RegisterView,LoginView,UserView,LogoutView,RefreshView
 from . import views
 
 
 
 urlpatterns = [
+
     re_path(r'^index',views.index,name='index'),
     path('register/', RegisterView.as_view()),
     re_path(r'^$',views.signin,name='signin'),
