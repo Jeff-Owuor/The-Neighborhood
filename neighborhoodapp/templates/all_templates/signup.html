@@ -1,0 +1,65 @@
+{% extends 'all_templates/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+
+<div height="100%" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjX0UVfwR2ovh2VCgANV6IQHi2eLcuFmi3Uj4KNLuQay4fhvdAIGHvWOv7vaNkPPgfk-Y&usqp=CAU');background-repeat: no-repeat; background-size: cover; background-position: center; right: 0;height: 100%;width: 100%;position: fixed;z-index: 1;top: 0;overflow-x: hidden;padding-top: 30px;padding-bottom: 30px;">
+  <div style="padding-top: 50px; height: 100%; border-radius: 5px;
+background-color: #ffffff;
+padding: 20px;
+width: 50%;
+margin: auto;" class="my_signup_div">
+<h2 class="text-center">SignUp</h2>
+<hr>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <label for="username">Username</label>
+    <input style="width: 100%;
+    background-color: lightblue;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;" class="signup_input" type="text" id="username" name="username" placeholder="Username..">
+
+    <label for="email">Email</label>
+    <input style="width: 100%;
+    background-color: lightblue;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;" class="signup_input" type="email" id="email" name="email" placeholder="Email..">
+
+    <label for="password">Password</label>
+    <input style="width: 100%;
+    background-color: lightblue;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;" class="signup_input" type="password" id="password" name="password" placeholder="Password...">
+
+    <label for="confirm_password">Confirm Password</label>
+    <input style="width: 100%;
+    background-color: lightblue;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;" class="signup_input" type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password...">
+  
+    <input style="padding: 10px 30px;
+    margin: 10px;" type="submit" class="signup_button btn btn-primary btn-sm" value="Sign Up">
+
+    <div class="">
+        <p class="text-base"> Already have an account? <b><a href="{% url 'signin' %}"> LogIn </a></b></p>
+    </div>
+  </form>
+</div>
+</div>
+
+{% endblock %}
