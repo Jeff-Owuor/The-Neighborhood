@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
-
-
+from django.contrib import messages
 from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authentication import get_authorization_header
@@ -31,15 +30,17 @@ def signup(request):
 
 
 def signin(request):
-    context ={}
     if request.method == 'POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        user = authenticate(request,username=username,password=password)
+        username=request.POST['username']
+        password=request.POST['password']
+        user = auth.authenticate(username=username,password=password)
         if user is not None:
-            login(request,user)
+            auth.login(request,user)
             return redirect('index')
-    return render(request,'all_templates/signin.html',context)
+        else:
+            messages.info(request, 'Invalid Credentials')
+            return redirect('signin')
+    return render(request,'all_templates/signin.html')
 
 def logout(request):
     logout(request)
@@ -59,9 +60,9 @@ def search_business(request):
         message = "You haven't searched for any image category"
     return render(request, 'all_templates/search.html', {'message': message})
 
-@login_required(login_url='signin')
+# @login_required(login_url='signin')
 def profile(request):
-    profile = Profile.objects.get(user=request.user.id)
+    # profile = Profile.objects.get(user=request.user.id)
     form = ProfileEdit(instance=request.user.profile)
     form = ProfileEdit()
     if request.method=='POST':
