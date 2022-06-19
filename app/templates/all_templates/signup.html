@@ -12,45 +12,11 @@ margin: auto;" class="my_signup_div">
 <hr>
   <form action="" method="POST">
     {% csrf_token %}
-    <label for="username">Username</label>
-    <input style="width: 100%;
-    background-color: lightblue;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;" class="signup_input" type="text" id="username" name="username" placeholder="Username..">
-
-    <label for="email">Email</label>
-    <input style="width: 100%;
-    background-color: lightblue;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;" class="signup_input" type="email" id="email" name="email" placeholder="Email..">
-
-    <label for="password">Password</label>
-    <input style="width: 100%;
-    background-color: lightblue;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;" class="signup_input" type="password" id="password" name="password" placeholder="Password...">
-
-    <label for="confirm_password">Confirm Password</label>
-    <input style="width: 100%;
-    background-color: lightblue;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;" class="signup_input" type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password...">
+    {% for field in form %}
+                    <span style="margin:4px">{{ field.label }}:  {{ field }} </span>
+                    
+                 {% endfor %}
+                 {{ form.errors }}
   
     <input style="padding: 10px 30px;
     margin: 10px;" type="submit" class="signup_button btn btn-primary btn-sm" value="Sign Up">

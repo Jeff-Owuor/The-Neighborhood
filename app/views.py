@@ -1,16 +1,17 @@
 from django.shortcuts import render,redirect
+from django.contrib import messages
 from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authentication import get_authorization_header
 from .serializers import UserSerializer
+from django.views.generic.edit import CreateView
 from rest_framework.response import Response
-from .forms import RegisterForm, BusinessForm, ProfileEdit
-from .models import Profile,Business
+from .forms import NeighborhoodForm, RegisterForm,ProfileEdit,BusinessForm,PostForm,CreateProfileForm
+from .models import Neighborhood, Profile,Business,Post
 from django.contrib.auth.models import User,auth
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .authentication import create_access_token,create_refresh_token,decode_access_token,decode_refresh_token
+
 
 # Create your views here.
 def index(request):
@@ -23,7 +24,10 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect('signin')
+
+
     return render(request, 'all_templates/signup_form.html', {"form":form})
+
 
 def signin(request):
     if request.method == 'POST':
@@ -68,18 +72,95 @@ def profile(request):
             return redirect('profile')
     return render(request, 'all_templates/profile.html',{"profile":profile,"form":form})
 
-@login_required(login_url='signin')
+
+
+class CreateProfilePage(CreateView):
+    model = Profile
+    form_class = CreateProfileForm
+    template_name = 'app/create_user_profile.html'
+    
+    def form_valid(self,form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
 def business(request):
     user = request.user
     business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
-    form = BusinessForm()
-    if request.method=='POST':
+    return render(request, 'app/business.html',{"title":'Business/Events',"business":business,'user':user})
+
+def businessUpload(request):
+    current_user  = request.user
+    profile_instance = Profile.objects.get(user=current_user)
+    if request.method =='POST':
         form = BusinessForm(request.POST, request.FILES)
         if form.is_valid():
-            image = form.cleaned_data['image']
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            neighborhood = form.cleaned_data['neighborhood']
-            created = Business(image=image, name=name,email=email,neighborhood=neighborhood,user=request.user)
-            created.save()          
-    return render(request, 'all_templates/business.html',{"title":'Business/Events','form':form,"business":business,'user':user})
+            project = form.save(commit=False)
+            project.user = profile_instance
+            project.save()
+        return redirect('home')
+    else:
+        form  = BusinessForm()
+        context  = {
+            "form":form
+            }
+    return render(request, 'app/post.html', context)
+
+
+def search_business(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        business = Business.objects.filter(name__icontains=searched).all()
+        params = {
+            'searched':searched,
+            'businesses':business
+        }
+        return render(request, 'app/search.html', params)
+    else:
+        message = "You haven't searched for any image category"
+    return render(request, 'app/search.html', {'message': message})
+
+
+def postUpload(request):
+    current_user  = request.user
+    profile_instance = Profile.objects.get(user=current_user)
+    if request.method =='POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.user = profile_instance
+            project.save()
+        return redirect('home')
+    else:
+        form  = PostForm()
+        context  = {
+            "form":form
+            }
+    return render(request, 'app/post.html', context)
+
+def create_hood(request):
+    if request.method == 'POST':
+        form = NeighborhoodForm(request.POST, request.FILES)
+        if form.is_valid():
+            hood = form.save(commit=False)
+            hood.admin = request.user.profile
+            hood.save()
+            return redirect('hood')
+    else:
+        form = NeighborhoodForm()
+    return render(request, 'newhood.html', {'form': form})
+
+
+def single_hood(request, hood_id):
+    hood = Neighborhood.objects.get(id=hood_id)
+    business = Business.objects.filter(neighbourhood=hood)
+    posts = Post.objects.filter(hood=hood)
+    posts = posts[::-1]
+    params = {
+        'hood': hood,
+        'business': business,
+        'posts': posts
+    }
+    return render(request, 'app/single_hood.html', params)
+
+  
