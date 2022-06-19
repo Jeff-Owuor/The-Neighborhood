@@ -5,17 +5,15 @@
     <div class="container-fluid">
         <div class="container" style="padding-bottom: 30px;">
             <h2 class="text-center" style="color: white; padding-bottom: 20px;">AVAILABLE BUSINESSES</h2>
-        {% for business in businesses %}
+        {% for business in business %}
             <div class="col-md-4">
                 <div class="card" style="width: 100;background-color:  #e6e6ea; padding: 10px;">
-                    <h3><b>{{business.user}}</b></h3>
                     {% if image.image %}
-                    <img src="{{business.image.url}}" style="width: 100%;" alt="">
+                        <img src="{{business.image.url}}" style="width: 100%;" alt="">
                     {% endif %}
                     <div class="card-body">
                         <h3>Name: {{ business.name }}</h3>
                         <p>Email: {{ business.email }}</p>
-                        <p>Neighborhood: {{ business.neighborhood }}</p>
                     </div>
                 </div>
             </div>
