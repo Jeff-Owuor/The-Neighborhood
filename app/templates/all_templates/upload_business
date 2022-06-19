@@ -1,0 +1,16 @@
+{% extends 'all_templates/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+<div class="container">
+        <h3 class="text-center">upload Your Business</h3>
+        <div class="form-data text-light mx-6" >
+            <form action="{% url 'business' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form%}
+                <button class="btn btn-info bg-success" type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

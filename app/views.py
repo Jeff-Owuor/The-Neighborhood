@@ -1,14 +1,20 @@
 from django.shortcuts import render,redirect
+
+
+from rest_framework.views import APIView
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.authentication import get_authorization_header
+from .serializers import UserSerializer
+from django.views.generic.edit import CreateView
+from rest_framework.response import Response
 from .forms import NeighborhoodForm, RegisterForm,ProfileEdit,BusinessForm,PostForm,CreateProfileForm
 from .models import Neighborhood, Profile,Business,Post
-from django.views.generic.edit import CreateView
+from django.contrib.auth.models import User,auth
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-
-
 def index(request):
     return render(request,'all_templates/index.html')
 
@@ -19,69 +25,52 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect('signin')
-    
-    return render(request, 'all_templates/signup.html', {"form":form})
+
+
+    return render(request, 'all_templates/signup_form.html', {"form":form})
 
 
 def signin(request):
     context ={}
-    
     if request.method == 'POST':
         username=request.POST.get('username')
         password=request.POST.get('password')
-        
         user = authenticate(request,username=username,password=password)
-        
         if user is not None:
             login(request,user)
             return redirect('index')
-    
     return render(request,'all_templates/signin.html',context)
 
 def logout(request):
     logout(request)
-    return redirect('login')
+    return redirect('signin')
 
-def register(request):
-    form = RegisterForm()
+@login_required(login_url = "signin")
+def search_business(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    
-    return render(request, 'registration/register.html', {"form":form})
+        searched = request.POST['searched']
+        business = Business.objects.filter(name__icontains=searched).all()
+        params = {
+            'searched':searched,
+            'businesses':business
+        }
+        return render(request, 'all_templates/search.html', params)
+    else:
+        message = "You haven't searched for any image category"
+    return render(request, 'all_templates/search.html', {'message': message})
 
-
-def loginPage(request):
-    context ={}
-    
-    if request.method == 'POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        
-        user = authenticate(request,username=username,password=password)
-        
-        if user is not None:
-            login(request,user)
-            return redirect('home')
-    
-    return render(request,'registration/login.html',context)
-
-def logout_user(request):
-    logout(request)
-    return redirect('login')
-
+@login_required(login_url='signin')
 def profile(request):
     profile = Profile.objects.get(user=request.user.id)
     form = ProfileEdit(instance=request.user.profile)
-    
+    form = ProfileEdit()
     if request.method=='POST':
         form = ProfileEdit(request.POST,request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
             return redirect('profile')
-    return render(request, 'app/profile.html',{"profile":profile,"form":form})
+    return render(request, 'all_templates/profile.html',{"profile":profile,"form":form})
+
 
 
 class CreateProfilePage(CreateView):
@@ -93,7 +82,7 @@ class CreateProfilePage(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-@login_required(login_url='login')
+
 def business(request):
     user = request.user
     business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
@@ -172,3 +161,5 @@ def single_hood(request, hood_id):
         'posts': posts
     }
     return render(request, 'app/single_hood.html', params)
+
+  

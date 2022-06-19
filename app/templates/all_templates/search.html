@@ -3,16 +3,18 @@
 {% block content %}
 
 <div class="container">
-    <h3 class="text-center text-light">These are the search results for ' {{ message }} '</h3>
+    <h3 class="text-center text-light">These are the results of your search</h3>
     {% for business in businesses %}
     <div class="col">
         <div class="card" style="width: 80%;background-color:  #e6e6ea; padding: 10px;">
             {% if business.image %}
-                <img src="{{image.image.url}}" style="width: 100%;" alt="">
+                <img src="{{business.image.url}}" style="width: 100%;" alt="">
             {% endif %}
             <div class="card-body">
-                <h3><b>{{business.user}}</b></h3>
-                <h3><b>{{business.businness_name}}</b></h3>
+                <h3><b>{{business.name}}</b></h3>
+                <h3>{{business.neighborhood}}</h3>
+                <p>{{ business.email }}</p>
+
             </div>
         </div>
     </div>

@@ -74,11 +74,12 @@
     <div class="topnav">
       <div class="navbar-header">
         <a class="navbar-brand" href="{% url 'index' %}">HOME</a>
-        <a class="navbar-brand" href="#">PROFILE</a>
+        <a class="navbar-brand" href="{% url 'profile' %}">PROFILE</a>
+        <a class="navbar-brand" href="{% url 'business' %}">BUSINESS</a>
         <a class="navbar-brand" href="{% url 'signin' %}">SIGNOUT</a>
       </div>
       <div class="search-container">
-        <form action="" role="search">
+        <form action="{% url 'search' %}" role="search">
           <input type="text" placeholder="Search Here ..." name="search">
           <button type="submit"><i class="glyphicon glyphicon-search"></i></button>
         </form>
