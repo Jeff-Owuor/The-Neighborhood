@@ -2,9 +2,22 @@
 {% load bootstrap3 %}
 {% block content %}
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="background-image: url('https://media.istockphoto.com/photos/new-homes-on-a-quiet-street-in-raleigh-nc-picture-id1319269543?b=1&k=20&m=1319269543&s=170667a&w=0&h=9Nv2yeDkHR01ADDhxcY4A1PZx9veOOwPRVnNXT6Jk3c=');right: 0;height: 100%;width: 100%;position: fixed;z-index: 1;top: 0;overflow-x: hidden;padding-top: 30px;padding-bottom: 30px;background-repeat: no-repeat; background-size: cover;background-position: center;">
         <div class="container" style="padding-bottom: 30px;">
-            <h1 class="text-center" style="color: white; padding-bottom: 20px;">WELCOME TO AWWWARDS</h1>
+            <div class="row" style="margin-top: 50px;">
+                <div class="col-md-4">
+                    <h3 class="text-center" style="color: lightblue;width: 100%;"></h3>
+                </div>
+                <div style="margin: auto; display: flex; justify-content: center;">
+                    <img class="text-center" height="150" style="border-radius: 10%; position: absolute; top: 30px; right: 30px;" src="https://thumbs.dreamstime.com/b/neighborhood-association-logo-design-template-vector-neighborhood-association-template-104815628.jpg" alt="">
+                </div>
+            </div>
+            <h2 class="text-center" style="color: white; margin-top: 100px;">GET TO KNOW EVERYTHING</h2>
+            <h2 class="text-center" style="color: white;margin-top: 30px;">HAPPENING IN YOUR</h2>
+            <h2 class="text-center" style="color: white; margin-top: 30px;">NEIGHBORHOOD</h2>
+            <div class="row text-center" style="margin-top: 150px; display: flex; justify-content: center;">
+                <h3 class="text-center" style="color: lightblue; border-bottom: solid lightblue 1px;width: 60%;">Upcoming Events, Businesses & Meeting Announcements</h3>
+            </div>
         {% for business in businesses %}
 
             <div class="col-md-4">
