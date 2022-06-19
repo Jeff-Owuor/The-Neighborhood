@@ -24,7 +24,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect('signin')
-    return render(request, 'all_templates/signup.html', {"form":form})
+    return render(request, 'all_templates/signup_form.html', {"form":form})
 
 def signin(request):
     context ={}
@@ -58,7 +58,6 @@ def search_business(request):
 @login_required(login_url='signin')
 def profile(request):
     profile = Profile.objects.get(user=request.user.id)
-    profile = Profile.objects.all()
     form = ProfileEdit(instance=request.user.profile)
     form = ProfileEdit()
     if request.method=='POST':
@@ -72,7 +71,6 @@ def profile(request):
 def business(request):
     user = request.user
     business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
-    business = Business.objects.all()
     form = BusinessForm()
     if request.method=='POST':
         form = BusinessForm(request.POST, request.FILES)
