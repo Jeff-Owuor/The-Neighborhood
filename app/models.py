@@ -7,6 +7,8 @@ class Neighborhood(models.Model):
     neighborhood_name = models.CharField(max_length=100)
     neighborhood_location = models.CharField(max_length=100)
     occupants_count = models.IntegerField()
+    health_tell = models.IntegerField(null=True, blank=True)
+    police_number = models.IntegerField(null=True, blank=True)
     
     
     def create_neighborhood(self):
@@ -17,14 +19,11 @@ class Neighborhood(models.Model):
     @classmethod   
     def find_neighborhood(cls, id):
         return cls.objects.get(id=id)
-
-
+    
 
 
 class Profile(models.Model):
     image = CloudinaryField('image', null=True)
-    username = models.CharField(max_length=100)
-    email = models.EmailField()
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
     bio = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -32,6 +31,15 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
     
+ 
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=120, null=True)
+    post = CloudinaryField('image', null=True)
+    description = models.TextField()
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_owner')
+    hood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='hood_post') 
     
 class Business(models.Model):
     image = CloudinaryField('image', null=True)
@@ -51,14 +59,5 @@ class Business(models.Model):
     
     def __str__(self):
         return self.name
-    
-    
-class Contact(models.Model):
-    name = models.CharField(max_length=50)
-    number = models.CharField(max_length=100)
-    neighborhood = models.ForeignKey(Neighborhood,on_delete=models.CASCADE,null=True)
-    
-    def __str__(self):
-        return f"{self.name} {self.neighborhood.name}"
     
     
