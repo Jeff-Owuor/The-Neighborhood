@@ -13,10 +13,13 @@ urlpatterns = [
     re_path(r'^search/',views.search_business,name='search'),
     re_path(r'^signup',views.signup,name='signup'),
     re_path(r'^logout',views.logout,name='logout'),
-    path('search_business/', views.search_business , name='search_business'),
-    path('welfarepost/', views.postUpload ,  name='postUpload'),
-    path('businesspost/', views.businessUpload ,  name='businessUpload'),     
+    re_path(r'^postUpload',views.postUpload,name='postUpload'),
+    re_path(r'^businessUpload',views.businessUpload,name='businessUpload'),
+    path(r'create_hood', views.create_hood,name='create_hood'),
+    path(r'single_hood', views.single_hood,name='single_hood'),
+    path('welfarepost/', views.postUpload,name='postUpload'),     
     re_path(r'^business',views.business,name='business'),
-    re_path(r'^profile',views.profile,name='profile'),   
+    re_path(r'^profile',views.profile,name='profile'),  
+    re_path(r'^edit_profile',views.edit_profile,name='edit_profile'), 
 
 ]
