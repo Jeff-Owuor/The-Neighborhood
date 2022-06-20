@@ -1,11 +1,6 @@
 from django.urls import re_path,path,include
 from django.contrib import admin
-
-# from .views import index,RegisterView,LoginView,UserView,LogoutView,RefreshView
-
 from . import views
-
-
 
 urlpatterns = [
 
@@ -18,10 +13,10 @@ urlpatterns = [
     re_path(r'^businessUpload',views.businessUpload,name='businessUpload'),
     re_path(r'create_hood', views.create_hood,name='create_hood'),
     path('join_hood/<id>', views.join_neighborhood, name='join-hood'),
-    path('leave_hood/<id>', views.leave_neighborhood, name='leave-hood'),
-    # path('welfarepost/', views.postUpload,name='postUpload'),     
+    path('leave_hood/<id>', views.leave_neighborhood, name='leave-hood'),   
     re_path(r'^business/',views.business,name='business'),
     re_path(r'^profile',views.profile,name='profile'),  
+    re_path(r'^post',views.post,name='post'),  
     re_path(r'^edit_profile',views.edit_profile,name='edit_profile'),
     path('neigborhoods/', views.neigborhoods, name='neigborhoods'), 
     path('<hood_id>/neighborhood_occupants', views.neighborhood_occupants, name='members'), 

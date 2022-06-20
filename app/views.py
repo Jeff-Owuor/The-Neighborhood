@@ -25,10 +25,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect('signin')
-
-
     return render(request, 'all_templates/signup_form.html', {"form":form})
-
 
 def signin(request):
     if request.method == 'POST':
@@ -83,25 +80,13 @@ def edit_profile(request):
             profile.user = current_user
             profile.save()
         return HttpResponseRedirect('profile')
-
     else:
         form = ProfileEdit()
     return render(request, 'all_templates/edit_profile.html', {"form": form})
 
-
-# class CreateProfilePage(CreateView):
-#     model = Profile
-#     form_class = CreateProfileForm
-#     template_name = 'app/create_user_profile.html'
-    
-#     def form_valid(self,form):
-#         form.instance.user = self.request.user
-#         return super().form_valid(form)
-
-
 def business(request):
     user = request.user
-    business = Business.objects.get(neighborhood=user.profile.neighborhood).all()
+    business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
     return render(request, 'all_templates/business.html',{"title":'Business/Events',"business":business,'user':user})
 
 def businessUpload(request):
@@ -121,6 +106,8 @@ def businessUpload(request):
             }
     return render(request, 'all_templates/upload_business.html', context)
 
+def post(request):
+    return render(request, 'all_templates/post.html')
 
 def postUpload(request):
     current_user  = request.user
@@ -131,7 +118,7 @@ def postUpload(request):
             project = form.save(commit=False)
             project.user = profile_instance
             project.save()
-        return redirect('index')
+        return redirect('post')
     else:
         form  = PostForm()
         context  = {
@@ -143,7 +130,6 @@ def neighborhood_occupants(request, neighborhood_id):
     hood = Neighborhood.objects.get(id=neighborhood_id)
     members = Profile.objects.filter(neighbourhood=hood)
     return render(request, 'all_templates/members.html', {'members': members})
-
 
 def create_hood(request):
     if request.method == 'POST':
@@ -171,16 +157,11 @@ def join_neighborhood(request, id):
     request.user.profile.save()
     return redirect('index')
 
-
 def leave_neighborhood(request, id):
     hood = get_object_or_404(Neighborhood, id=id)
     request.user.profile.neighborhood = None
     request.user.profile.save()
     return redirect('neigborhoods')
-
-
-
-
 
 def neighborhood_occupants(request, neighborhood_id):
     hood = Neighborhood.objects.get(id=neighborhood_id)
