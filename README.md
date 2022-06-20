@@ -86,5 +86,5 @@ $ sudo apt-get install postgresql postgresql-contrib libpq-dev
 
 ### Emails
 
-> monicahjustus@gmail.com
-> jeffowuor@gmail.com
+* monicahjustus@gmail.com
+* jeffowuor@gmail.com
