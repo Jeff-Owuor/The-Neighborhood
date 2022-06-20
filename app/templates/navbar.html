@@ -75,13 +75,11 @@
         <div class="topnav">
           <div class="navbar-header">
             <a class="navbar-brand" href="{% url 'index' %}">HOME</a>
-            <a class="navbar-brand" href="{% url 'profile' %}">PROFILE</a>
             <a class="navbar-brand" href="{% url 'business' %}">BUSINESS</a>
-            <a class="navbar-brand" href="{% url 'businessUpload' %}">UploadBusiness</a>
+            <a class="navbar-brand" href="{% url 'single_hood' %}">HOOD</a>
+            <a class="navbar-brand" href="{% url 'postUpload' %}">POST</a>
+            <a class="navbar-brand" href="{% url 'profile' %}">PROFILE</a>
             <a class="navbar-brand" href="{% url 'signin' %}">SIGNOUT</a>
-            <a class="navbar-brand" href="{% url 'create_hood' %}">CreateHood</a>
-            <a class="navbar-brand" href="{% url 'single_hood' %}">SingleHood</a>
-            <a class="navbar-brand" href="{% url 'postUpload' %}">UploadPost</a>
         </div>
       {% endif %}
       <div class="search-container">
