@@ -17,7 +17,7 @@ class BusinessForm(forms.ModelForm):
 class ProfileEdit(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image','username','email','neighborhood','bio']
+        fields = ['image','username','email','bio']
         
 class PostForm(forms.ModelForm):
     class Meta:

@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 class Neighborhood(models.Model):
     neighborhood_name = models.CharField(max_length=100)
     neighborhood_location = models.CharField(max_length=100)
-    occupants_count = models.IntegerField()
     health_tell = models.IntegerField(null=True, blank=True)
     police_number = models.IntegerField(null=True, blank=True)
     

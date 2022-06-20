@@ -61,19 +61,6 @@ def search_business(request):
         message = "You haven't searched for any image category"
     return render(request, 'all_templates/search.html', {'message': message})
 
-# def search_business(request):
-#     if request.method == 'POST':
-#         searched = request.POST['searched']
-#         business = Business.objects.filter(name__icontains=searched).all()
-#         params = {
-#             'searched':searched,
-#             'businesses':business
-#         }
-#         return render(request, 'app/search.html', params)
-#     else:
-#         message = "You haven't searched for any image category"
-#     return render(request, 'app/search.html', {'message': message})
-
 @login_required(login_url='signin')
 def profile(request):
     profile = Profile.objects.get(user=request.user.id)
@@ -114,7 +101,7 @@ def edit_profile(request):
 
 def business(request):
     user = request.user
-    business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
+    business = Business.objects.get(neighborhood=user.profile.neighborhood).all()
     return render(request, 'all_templates/business.html',{"title":'Business/Events',"business":business,'user':user})
 
 def businessUpload(request):
@@ -152,6 +139,11 @@ def postUpload(request):
             }
     return render(request, 'all_templates/post_form.html', context)
 
+def neighborhood_occupants(request, neighborhood_id):
+    hood = Neighborhood.objects.get(id=neighborhood_id)
+    members = Profile.objects.filter(neighbourhood=hood)
+    return render(request, 'all_templates/members.html', {'members': members})
+
 
 def create_hood(request):
     if request.method == 'POST':
@@ -160,22 +152,34 @@ def create_hood(request):
             hood = form.save(commit=False)
             hood.admin = request.user.profile
             hood.save()
-            return redirect('single_hood')
+            return redirect('index')
     else:
         form = NeighborhoodForm()
-    return render(request, 'all_templates/newhood.html', {'form': form})
+    return render(request, 'all_templates/newhood_form.html', {'form': form})
 
 
-def single_hood(request, hood_id):
-    hood = Neighborhood.objects.get(id=hood_id)
-    business = Business.objects.filter(neighbourhood=hood)
-    posts = Post.objects.filter(hood=hood)
-    posts = posts[::-1]
-    params = {
-        'hood': hood,
-        'business': business,
-        'posts': posts
-    }
-    return render(request, 'all_templates/single_hood.html', params)
+@login_required(login_url='signin')
+def profile(request):
+    profile = Profile.objects.get(user=request.user.id)
+    form = ProfileEdit(instance=request.user.profile)
+    form = ProfileEdit()
+    if request.method=='POST':
+        form = ProfileEdit(request.POST,request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    return render(request, 'all_templates/profile.html',{"profile":profile,"form":form})
+
+# def single_hood(request, hood_id):
+#     hood = Neighborhood.objects.get(id=hood_id)
+#     business = Business.objects.filter(neighbourhood=hood)
+#     posts = Post.objects.filter(hood=hood)
+#     posts = posts[::-1]
+#     params = {
+#         'hood': hood,
+#         'business': business,
+#         'posts': posts
+#     }
+#     return render(request, 'all_templates/single_hood.html', params)
 
   
