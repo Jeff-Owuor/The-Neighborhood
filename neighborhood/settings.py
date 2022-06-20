@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'rest_framework',
     'corsheaders',
+    'tinymce',
 
 ]
 

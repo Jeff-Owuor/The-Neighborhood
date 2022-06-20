@@ -9,4 +9,3 @@ admin.site.register(Business)
 admin.site.register(Neighborhood)
 
 
-

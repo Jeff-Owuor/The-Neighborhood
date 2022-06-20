@@ -1,0 +1,26 @@
+{% extends 'all_templates/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="container" style="padding-bottom: 30px;">
+            <h2 class="text-center" style="color: black; padding-bottom: 20px;">CREATE HOOD</h2>
+            <div class="row">
+               <div class="col-md-4">
+                <a href="{% url 'create_hood' %}"><button style="margin: 20px;" class="btn btn-info bg-success" type="submit">CreateHood</button></a>
+               </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="width: 100;background-color:  #e6e6ea; padding: 10px;">
+                    <div class="card-body">
+                        <h3>Name: {{ hood.neighborhood_name }}</h3>
+                        <h3>Location: {{ hood.neighborhood_location }}</h3>
+                        <h3>Health Tell: {{ hood.health_tell }}</h3>
+                        <h3>Police Number: {{ hood.police_number }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

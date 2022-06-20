@@ -1,14 +1,20 @@
 from django.shortcuts import render,redirect
+from django.contrib import messages
+from rest_framework.views import APIView
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.authentication import get_authorization_header
+from .serializers import UserSerializer
+from django.views.generic.edit import CreateView
+from rest_framework.response import Response
+from django.http import HttpResponseRedirect
 from .forms import NeighborhoodForm, RegisterForm,ProfileEdit,BusinessForm,PostForm,CreateProfileForm
 from .models import Neighborhood, Profile,Business,Post
-from django.views.generic.edit import CreateView
+from django.contrib.auth.models import User,auth
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-
-
 def index(request):
     return render(request,'all_templates/index.html')
 
@@ -19,85 +25,97 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect('signin')
-    
-    return render(request, 'all_templates/signup.html', {"form":form})
+
+
+    return render(request, 'all_templates/signup_form.html', {"form":form})
 
 
 def signin(request):
-    context ={}
-    
     if request.method == 'POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        
-        user = authenticate(request,username=username,password=password)
-        
+        username=request.POST['username']
+        password=request.POST['password']
+        user = auth.authenticate(username=username,password=password)
         if user is not None:
-            login(request,user)
+            auth.login(request,user)
             return redirect('index')
-    
-    return render(request,'all_templates/signin.html',context)
+        else:
+            messages.info(request, 'Invalid Credentials')
+            return redirect('signin')
+    return render(request,'all_templates/signin.html')
 
 def logout(request):
     logout(request)
-    return redirect('login')
+    return redirect('signin')
 
-def register(request):
-    form = RegisterForm()
+@login_required(login_url = "signin")
+def search_business(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    
-    return render(request, 'registration/register.html', {"form":form})
+        searched = request.POST['searched']
+        business = Business.objects.filter(name__icontains=searched).all()
+        params = {
+            'searched':searched,
+            'businesses':business
+        }
+        return render(request, 'all_templates/search.html', params)
+    else:
+        message = "You haven't searched for any image category"
+    return render(request, 'all_templates/search.html', {'message': message})
 
+# def search_business(request):
+#     if request.method == 'POST':
+#         searched = request.POST['searched']
+#         business = Business.objects.filter(name__icontains=searched).all()
+#         params = {
+#             'searched':searched,
+#             'businesses':business
+#         }
+#         return render(request, 'app/search.html', params)
+#     else:
+#         message = "You haven't searched for any image category"
+#     return render(request, 'app/search.html', {'message': message})
 
-def loginPage(request):
-    context ={}
-    
-    if request.method == 'POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        
-        user = authenticate(request,username=username,password=password)
-        
-        if user is not None:
-            login(request,user)
-            return redirect('home')
-    
-    return render(request,'registration/login.html',context)
-
-def logout_user(request):
-    logout(request)
-    return redirect('login')
-
+@login_required(login_url='signin')
 def profile(request):
     profile = Profile.objects.get(user=request.user.id)
     form = ProfileEdit(instance=request.user.profile)
-    
+    form = ProfileEdit()
     if request.method=='POST':
         form = ProfileEdit(request.POST,request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
             return redirect('profile')
-    return render(request, 'app/profile.html',{"profile":profile,"form":form})
+    return render(request, 'all_templates/profile.html',{"profile":profile,"form":form})
+
+@login_required(login_url = "signin")
+def edit_profile(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = ProfileEdit(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = current_user
+            profile.save()
+        return HttpResponseRedirect('profile')
+
+    else:
+        form = ProfileEdit()
+    return render(request, 'all_templates/edit_profile.html', {"form": form})
 
 
-class CreateProfilePage(CreateView):
-    model = Profile
-    form_class = CreateProfileForm
-    template_name = 'app/create_user_profile.html'
+# class CreateProfilePage(CreateView):
+#     model = Profile
+#     form_class = CreateProfileForm
+#     template_name = 'app/create_user_profile.html'
     
-    def form_valid(self,form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+#     def form_valid(self,form):
+#         form.instance.user = self.request.user
+#         return super().form_valid(form)
 
-@login_required(login_url='login')
+
 def business(request):
     user = request.user
     business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
-    return render(request, 'app/business.html',{"title":'Business/Events',"business":business,'user':user})
+    return render(request, 'all_templates/business.html',{"title":'Business/Events',"business":business,'user':user})
 
 def businessUpload(request):
     current_user  = request.user
@@ -108,27 +126,13 @@ def businessUpload(request):
             project = form.save(commit=False)
             project.user = profile_instance
             project.save()
-        return redirect('home')
+        return redirect('business')
     else:
         form  = BusinessForm()
         context  = {
             "form":form
             }
-    return render(request, 'app/post.html', context)
-
-
-def search_business(request):
-    if request.method == 'POST':
-        searched = request.POST['searched']
-        business = Business.objects.filter(name__icontains=searched).all()
-        params = {
-            'searched':searched,
-            'businesses':business
-        }
-        return render(request, 'app/search.html', params)
-    else:
-        message = "You haven't searched for any image category"
-    return render(request, 'app/search.html', {'message': message})
+    return render(request, 'all_templates/upload_business.html', context)
 
 
 def postUpload(request):
@@ -140,13 +144,14 @@ def postUpload(request):
             project = form.save(commit=False)
             project.user = profile_instance
             project.save()
-        return redirect('home')
+        return redirect('index')
     else:
         form  = PostForm()
         context  = {
             "form":form
             }
-    return render(request, 'app/post.html', context)
+    return render(request, 'all_templates/post_form.html', context)
+
 
 def create_hood(request):
     if request.method == 'POST':
@@ -155,10 +160,10 @@ def create_hood(request):
             hood = form.save(commit=False)
             hood.admin = request.user.profile
             hood.save()
-            return redirect('hood')
+            return redirect('single_hood')
     else:
         form = NeighborhoodForm()
-    return render(request, 'newhood.html', {'form': form})
+    return render(request, 'all_templates/newhood.html', {'form': form})
 
 
 def single_hood(request, hood_id):

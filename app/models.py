@@ -28,6 +28,8 @@ class Profile(models.Model):
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
     bio = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField()
+    username = models.CharField(max_length=100)
     
     def __str__(self):
         return self.user.username

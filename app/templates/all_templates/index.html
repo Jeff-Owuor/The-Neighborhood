@@ -1,29 +1,45 @@
 {% extends 'all_templates/base.html' %}
 {% load bootstrap3 %}
+{% load static %}
 {% block content %}
 
     <div class="container-fluid">
         <div class="container" style="padding-bottom: 30px;">
-            <h1 class="text-center" style="color: white; padding-bottom: 20px;">WELCOME TO AWWWARDS</h1>
-        {% for business in businesses %}
-
+            <div style="background-image: url('https://media.istockphoto.com/photos/new-homes-on-a-quiet-street-in-raleigh-nc-picture-id1319269543?b=1&k=20&m=1319269543&s=170667a&w=0&h=9Nv2yeDkHR01ADDhxcY4A1PZx9veOOwPRVnNXT6Jk3c=');right: 0;height: 100%; width: 100%;position: fixed;z-index: 1;overflow-x: hidden;padding-top: 30px;padding-bottom: 30px;background-repeat: no-repeat; background-size: cover;background-position: center;">
+                <div class="row" style="margin-top: 50px;">
+                    <div style="margin: auto; display: flex; justify-content: center;">
+                        <img class="text-center" height="150" style="border-radius: 10%; position: absolute; top: 30px; right: 30px;" src="https://thumbs.dreamstime.com/b/neighborhood-association-logo-design-template-vector-neighborhood-association-template-104815628.jpg" alt="">
+                    </div>
+                </div>
+                <h2 class="text-center" style="color: white; margin-top: 100px;">GET TO KNOW EVERYTHING</h2>
+                <h2 class="text-center" style="color: white;margin-top: 30px;">HAPPENING IN YOUR</h2>
+                <h2 class="text-center" style="color: white; margin-top: 30px;">NEIGHBORHOOD</h2>
+                <div class="row text-center" style="margin-top: 150px; display: flex; justify-content: center;">
+                    <h3 class="text-center" style="color: lightblue; border-bottom: solid lightblue 1px;width: 60%;">Upcoming Events, Businesses & Meeting Announcements</h3>
+                </div>
+            </div>
+            
+        </div>
+        <div class="container" style="padding-bottom: 30px;">
+            <h2 class="text-center" style="color: black; padding-bottom: 20px;">RECENT POSTS</h2>
+            <div class="row">
+               <div class="col-md-4">
+                <a href="{% url 'postUpload' %}"><button style="margin: 20px;" class="btn btn-info bg-success" type="submit">AddPost</button></a>
+               </div>
+            </div>
             <div class="col-md-4">
                 <div class="card" style="width: 100;background-color:  #e6e6ea; padding: 10px;">
-                    {% if image.image %}
-                    <img src="{{project.image.url}}" style="width: 100%;" alt="">
-                    {% endif %}
+                    <img src="{{project.post.url}}" style="width: 100%;" alt="">
                     <div class="card-body">
-                        <h3><b>{{business.user}}</b></h3>
-                        <a href="{{project.project_link}}" style="text-decoration: none;">{{project.project_link}}</a>
-                        <h4><b>{{business.business_name}}</b></h4>
-                        <p><b><h4 class="" style="border-bottom: solid maroon 1px; width:40%"> Description</h4></b> {{project.project_description}}</p>
-                        <a href="{% url 'project_details' project.id %}"><button class="btn btn-success">Review App</button></a>
+                        <h3>Name: {{ project.title }}</h3>
+                        {% autoescape on %}
+                        {{project.description| safe}}
+                        {% endautoescape %}
                     </div>
                 </div>
             </div>
-
-        {% endfor%}
         </div>
+    
     </div>
 
 {% endblock %}

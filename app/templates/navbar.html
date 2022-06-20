@@ -2,7 +2,7 @@
     
     .topnav {
       overflow: hidden;
-      background-color: #e9e9e9;
+      background-color: lightblue;
     }
     
     .topnav a {
@@ -71,14 +71,19 @@
     </head>
     <body>
     
-    <div class="topnav">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="{% url 'index' %}">HOME</a>
-        <a class="navbar-brand" href="#">PROFILE</a>
-        <a class="navbar-brand" href="{% url 'signin' %}">SIGNOUT</a>
-      </div>
+      {% if user.is_authenticated %}
+        <div class="topnav">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'index' %}">HOME</a>
+            <a class="navbar-brand" href="{% url 'business' %}">BUSINESS</a>
+            <a class="navbar-brand" href="{% url 'single_hood' %}">HOOD</a>
+            <a class="navbar-brand" href="{% url 'postUpload' %}">POST</a>
+            <a class="navbar-brand" href="{% url 'profile' %}">PROFILE</a>
+            <a class="navbar-brand" href="{% url 'signin' %}">SIGNOUT</a>
+        </div>
+      {% endif %}
       <div class="search-container">
-        <form action="" role="search">
+        <form action="{% url 'search' %}" role="search">
           <input type="text" placeholder="Search Here ..." name="search">
           <button type="submit"><i class="glyphicon glyphicon-search"></i></button>
         </form>

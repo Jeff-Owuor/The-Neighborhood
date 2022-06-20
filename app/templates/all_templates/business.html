@@ -1,0 +1,31 @@
+{% extends 'all_templates/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="container" style="padding-bottom: 30px;">
+            <h2 class="text-center" style="color: black; padding-bottom: 20px;">AVAILABLE BUSINESSES</h2>
+            <div class="row">
+               <div class="col-md-4">
+                <a href="{% url 'businessUpload' %}"><button style="margin: 20px;" class="btn btn-info bg-success" type="submit">Upload Business</button></a>
+               </div>
+            </div>
+            {% for business in business %}
+            <div class="col-md-4">
+                <div class="card" style="width: 100;background-color:  #e6e6ea; padding: 10px;">
+                    {% if image.image %}
+                        <img src="{{business.image.url}}" style="width: 100%;" alt="">
+                    {% endif %}
+                    <div class="card-body">
+                        <h3>Name: {{ business.name }}</h3>
+                        <p>Email: {{ business.email }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        
+        </div>
+    </div>
+
+{% endblock %}

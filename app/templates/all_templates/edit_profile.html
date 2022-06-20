@@ -1,0 +1,17 @@
+{% extends 'all_templates/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+<div height="100%" style="background-image: url('https://plexcollectionposters.com/images/2021/05/16/background-images-for-login-page3bc68c53b0db224b.jpg');background-repeat: no-repeat; background-size: cover; background-position: center; right: 0;height: 100%;width: 100%;position: fixed;z-index: 1;top: 0;overflow-x: hidden;padding-top: 30px;padding-bottom: 30px;">
+<div class="container" style="padding-top: 50px; height: 100; border-radius: 5px;background-color: white;width: 70%; padding: 20px;margin: auto;" class="my_signup_div">
+    <h2 class="text-center">Edit Your Profile</h2>
+    <hr>
+    <div class="form-data text-light mx-6" >
+        <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form%}
+            <button class="btn btn-info bg-success" type="submit">Upload</button>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}
