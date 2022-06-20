@@ -76,8 +76,8 @@ def search_business(request):
 
 @login_required(login_url='signin')
 def profile(request):
-    # profile = Profile.objects.get(user=request.user.id)
-    # form = ProfileEdit(instance=request.user.profile)
+    profile = Profile.objects.get(user=request.user.id)
+    form = ProfileEdit(instance=request.user.profile)
     form = ProfileEdit()
     if request.method=='POST':
         form = ProfileEdit(request.POST,request.FILES, instance=request.user.profile)
@@ -114,17 +114,17 @@ def edit_profile(request):
 
 def business(request):
     user = request.user
-    # business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
+    business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
     return render(request, 'all_templates/business.html',{"title":'Business/Events',"business":business,'user':user})
 
 def businessUpload(request):
     current_user  = request.user
-    # profile_instance = Profile.objects.get(user=current_user)
+    profile_instance = Profile.objects.get(user=current_user)
     if request.method =='POST':
         form = BusinessForm(request.POST, request.FILES)
         if form.is_valid():
             project = form.save(commit=False)
-            # project.user = profile_instance
+            project.user = profile_instance
             project.save()
         return redirect('business')
     else:
@@ -137,12 +137,12 @@ def businessUpload(request):
 
 def postUpload(request):
     current_user  = request.user
-    # profile_instance = Profile.objects.get(user=current_user)
+    profile_instance = Profile.objects.get(user=current_user)
     if request.method =='POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             project = form.save(commit=False)
-            # project.user = profile_instance
+            project.user = profile_instance
             project.save()
         return redirect('index')
     else:
@@ -150,7 +150,7 @@ def postUpload(request):
         context  = {
             "form":form
             }
-    return render(request, 'all_templates/post.html', context)
+    return render(request, 'all_templates/post_form.html', context)
 
 
 def create_hood(request):
@@ -158,7 +158,7 @@ def create_hood(request):
         form = NeighborhoodForm(request.POST, request.FILES)
         if form.is_valid():
             hood = form.save(commit=False)
-            # hood.admin = request.user.profile
+            hood.admin = request.user.profile
             hood.save()
             return redirect('single_hood')
     else:
