@@ -1,14 +1,15 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Neighborhood(models.Model):
     neighborhood_name = models.CharField(max_length=100)
     neighborhood_location = models.CharField(max_length=100)
-    occupants_count = models.IntegerField()
-    health_tell = models.IntegerField(null=True, blank=True)
-    police_number = models.IntegerField(null=True, blank=True)
+    health_tell = models.BigIntegerField(null=True, blank=True)
+    police_number = models.BigIntegerField(null=True, blank=True)
+    
     
     
     def create_neighborhood(self):
@@ -31,7 +32,8 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
     
- 
+    def get_absolute_url(self):
+        return reverse('index')
 
 
 class Post(models.Model):
@@ -40,6 +42,15 @@ class Post(models.Model):
     description = models.TextField()
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_owner')
     hood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='hood_post') 
+    
+    def create_post(self):
+        self.save()
+    
+    def delete_post(self):
+        self.delete()
+    
+    def find_post(self,id):
+        return Post.objects.get(id=id)
     
 class Business(models.Model):
     image = CloudinaryField('image', null=True)

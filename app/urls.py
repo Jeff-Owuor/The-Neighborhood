@@ -1,4 +1,5 @@
 from django.urls import re_path,path,include
+from django.contrib import admin
 from . import views
 
 
@@ -11,6 +12,7 @@ urlpatterns = [
     re_path(r'^logout',views.logout,name='logout'),
     path('search_business/', views.search_business , name='search_business'),
     path('welfarepost/', views.postUpload ,  name='postUpload'),
-    path('businesspost/', views.businessUpload ,  name='businessUpload'),     
+    path('businesspost/', views.businessUpload ,  name='businessUpload'),
+    path('<hood_id>/neighborhood_occupants', views.neighborhood_occupants, name='members'),    
     
 ]

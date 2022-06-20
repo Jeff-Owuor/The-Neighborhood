@@ -172,3 +172,9 @@ def single_hood(request, hood_id):
         'posts': posts
     }
     return render(request, 'app/single_hood.html', params)
+
+def neighborhood_occupants(request, neighborhood_id):
+    hood = Neighborhood.objects.get(id=neighborhood_id)
+    members = Profile.objects.filter(neighbourhood=hood)
+    return render(request, 'members.html', {'members': members})
+
