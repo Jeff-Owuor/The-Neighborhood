@@ -12,12 +12,12 @@ class RegisterForm(UserCreationForm):
 class BusinessForm(forms.ModelForm):
     class Meta:
         model = Business
-        fields = ['image','name','email']
+        fields = ['image','name','email','neighborhood']
         
 class ProfileEdit(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image','neighborhood','bio']
+        fields = ['image','bio','username','email']
         
 class PostForm(forms.ModelForm):
     class Meta:
@@ -28,12 +28,12 @@ class CreateProfileForm(forms.ModelForm):
     
     class Meta:
         model = Profile
-        fields = ['image','bio']
+        fields = ['image','bio','username','email']
         
 class NeighborhoodForm(forms.ModelForm):
     class Meta:
         model = Neighborhood
-        exclude = ('occupants_count',)
+        exclude = ('admin',)
       
              
        

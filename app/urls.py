@@ -19,10 +19,10 @@ urlpatterns = [
     # re_path(r'^post',views.post,name='post'),
     re_path(r'^businessUpload',views.businessUpload,name='businessUpload'),
     re_path(r'create_hood', views.create_hood,name='create_hood'),
-    re_path(r'single_hood$', views.single_hood,name='single_hood'),
     # path('welfarepost/', views.postUpload,name='postUpload'),     
-    re_path(r'^business',views.business,name='business'),
+    re_path(r'^business/',views.business,name='business'),
     re_path(r'^profile',views.profile,name='profile'),  
-    re_path(r'^edit_profile',views.edit_profile,name='edit_profile'), 
+    re_path(r'^edit_profile',views.edit_profile,name='edit_profile'),
+    path('neigborhoods/', views.neigborhoods, name='neigborhoods'), 
 
 ]
