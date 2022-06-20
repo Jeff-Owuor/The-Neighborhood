@@ -14,12 +14,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 
 import os
-import django_heroku
 from decouple import config,Csv
 import cloudinary
 import dj_database_url
 import cloudinary.uploader
 import cloudinary.api
+import django_heroku
 
 
 cloudinary.config( 
@@ -153,6 +153,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+django_heroku.settings(locals())
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -175,6 +176,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-django_heroku.settings(locals())
+
 
 
