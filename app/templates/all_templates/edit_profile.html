@@ -9,7 +9,7 @@
         <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form form%}
-            <button class="btn btn-info bg-success" type="submit">Upload</button>
+            <a href="{% url 'profile' %}"><button class="btn btn-info bg-success" type="submit">Upload</button></a>
         </form>
     </div>
 </div>
