@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib import messages
 from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
@@ -157,29 +157,33 @@ def create_hood(request):
         form = NeighborhoodForm()
     return render(request, 'all_templates/newhood_form.html', {'form': form})
 
+def neigborhoods(request):
+    hoods = Neighborhood.objects.all()
+    hoods = hoods[::-1]
+    context = {
+        'hoods': hoods,
+    }
+    return render(request, 'all_templates/all_neighborhoods.html', context)
 
-@login_required(login_url='signin')
-def profile(request):
-    profile = Profile.objects.get(user=request.user.id)
-    form = ProfileEdit(instance=request.user.profile)
-    form = ProfileEdit()
-    if request.method=='POST':
-        form = ProfileEdit(request.POST,request.FILES, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    return render(request, 'all_templates/profile.html',{"profile":profile,"form":form})
+def join_neighborhood(request, id):
+    neighbourhood = get_object_or_404(Neighborhood, id=id)
+    request.user.profile.neighborhood = neighbourhood
+    request.user.profile.save()
+    return redirect('index')
 
-# def single_hood(request, hood_id):
-#     hood = Neighborhood.objects.get(id=hood_id)
-#     business = Business.objects.filter(neighbourhood=hood)
-#     posts = Post.objects.filter(hood=hood)
-#     posts = posts[::-1]
-#     params = {
-#         'hood': hood,
-#         'business': business,
-#         'posts': posts
-#     }
-#     return render(request, 'all_templates/single_hood.html', params)
 
-  
+def leave_neighborhood(request, id):
+    hood = get_object_or_404(Neighborhood, id=id)
+    request.user.profile.neighborhood = None
+    request.user.profile.save()
+    return redirect('neigborhoods')
+
+
+
+
+
+def neighborhood_occupants(request, neighborhood_id):
+    hood = Neighborhood.objects.get(id=neighborhood_id)
+    members = Profile.objects.filter(neighbourhood=hood)
+    return render(request, 'members.html', {'members': members})
+

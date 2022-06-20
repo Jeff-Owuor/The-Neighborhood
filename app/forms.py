@@ -17,7 +17,7 @@ class BusinessForm(forms.ModelForm):
 class ProfileEdit(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image','username','email','bio']
+        fields = ['image','bio','username','email']
         
 class PostForm(forms.ModelForm):
     class Meta:
@@ -28,12 +28,12 @@ class CreateProfileForm(forms.ModelForm):
     
     class Meta:
         model = Profile
-        fields = ['image','username','bio']
+        fields = ['image','bio','username','email']
         
 class NeighborhoodForm(forms.ModelForm):
     class Meta:
         model = Neighborhood
-        exclude = ('occupants_count',)
+        exclude = ('admin',)
       
              
        
