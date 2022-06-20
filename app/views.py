@@ -61,19 +61,6 @@ def search_business(request):
         message = "You haven't searched for any image category"
     return render(request, 'all_templates/search.html', {'message': message})
 
-# def search_business(request):
-#     if request.method == 'POST':
-#         searched = request.POST['searched']
-#         business = Business.objects.filter(name__icontains=searched).all()
-#         params = {
-#             'searched':searched,
-#             'businesses':business
-#         }
-#         return render(request, 'app/search.html', params)
-#     else:
-#         message = "You haven't searched for any image category"
-#     return render(request, 'app/search.html', {'message': message})
-
 @login_required(login_url='signin')
 def profile(request):
     profile = Profile.objects.get(user=request.user.id)
@@ -114,7 +101,7 @@ def edit_profile(request):
 
 def business(request):
     user = request.user
-    business = Business.objects.filter(neighborhood=user.profile.neighborhood).all()
+    business = Business.objects.get(neighborhood=user.profile.neighborhood).all()
     return render(request, 'all_templates/business.html',{"title":'Business/Events',"business":business,'user':user})
 
 def businessUpload(request):
@@ -151,6 +138,11 @@ def postUpload(request):
             "form":form
             }
     return render(request, 'all_templates/post_form.html', context)
+
+def neighborhood_occupants(request, neighborhood_id):
+    hood = Neighborhood.objects.get(id=neighborhood_id)
+    members = Profile.objects.filter(neighbourhood=hood)
+    return render(request, 'all_templates/members.html', {'members': members})
 
 
 def create_hood(request):

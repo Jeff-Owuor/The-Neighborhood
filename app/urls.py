@@ -15,8 +15,6 @@ urlpatterns = [
     re_path(r'^signup',views.signup,name='signup'),
     re_path(r'^logout',views.logout,name='logout'),
     re_path(r'^postUpload$',views.postUpload,name='postUpload'),
-    # url(r'^new/article$', views.new_article, name='new-article')
-    # re_path(r'^post',views.post,name='post'),
     re_path(r'^businessUpload',views.businessUpload,name='businessUpload'),
     re_path(r'create_hood', views.create_hood,name='create_hood'),
     path('join_hood/<id>', views.join_neighborhood, name='join-hood'),
@@ -26,5 +24,6 @@ urlpatterns = [
     re_path(r'^profile',views.profile,name='profile'),  
     re_path(r'^edit_profile',views.edit_profile,name='edit_profile'),
     path('neigborhoods/', views.neigborhoods, name='neigborhoods'), 
+    path('<hood_id>/neighborhood_occupants', views.neighborhood_occupants, name='members'), 
 
 ]
