@@ -171,20 +171,20 @@ def neigborhoods(request):
     context = {
         'hoods': hoods,
     }
-    return render(request, 'app/all_neighborhoods.html', context)
+    return render(request, 'all_templates/all_neighborhoods.html', context)
 
 def join_neighborhood(request, id):
     neighbourhood = get_object_or_404(Neighborhood, id=id)
-    request.user.profile.neighbourhood = neighbourhood
+    request.user.profile.neighborhood = neighbourhood
     request.user.profile.save()
-    return redirect('hood')
+    return redirect('neigborhoods')
 
 
-def neighborhood(request, id):
+def leave_neighborhood(request, id):
     hood = get_object_or_404(Neighborhood, id=id)
-    request.user.profile.neighbourhood = None
+    request.user.profile.neighborhood = None
     request.user.profile.save()
-    return redirect('hood')
+    return redirect('neigborhoods')
 
 
 

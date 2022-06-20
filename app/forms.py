@@ -12,7 +12,7 @@ class RegisterForm(UserCreationForm):
 class BusinessForm(forms.ModelForm):
     class Meta:
         model = Business
-        fields = ['image','name','email','neighborhood']
+        fields = ['image','name','email']
         
 class ProfileEdit(forms.ModelForm):
     class Meta:
