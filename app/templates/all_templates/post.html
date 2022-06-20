@@ -9,16 +9,16 @@
         <a href="{% url 'postUpload' %}"><button style="margin: 20px;" class="btn btn-info bg-success" type="submit">AddPost</button></a>
        </div>
     </div>
-    <div class="col-md-4">
-        <div class="card" style="width: 100;background-color:  #e6e6ea; padding: 10px;">
-            <img src="{{project.post.url}}" style="width: 100%;" alt="">
-            <div class="card-body">
-                <h3>Name: {{ project.title }}</h3>
-                {% autoescape on %}
-                <p>Description: {{project.description| safe}}</p>
-                {% endautoescape %}
+    {% for post in posts %}
+            <div class="col-md-4">
+                <div class="card" style="width: 100;background-color:  #e6e6ea; padding: 10px;">
+                    <h3>Title: {{ post.title }}</h3>
+                        <img src="{{post.post.url}}" style="width: 100%;" alt="">
+                    <div class="card-body">
+                        <p>Description : {{ post.description }}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+            {% endfor %}
 </div>
 {% endblock %}

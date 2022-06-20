@@ -16,8 +16,9 @@ urlpatterns = [
     path('leave_hood/<id>', views.leave_neighborhood, name='leave-hood'),   
     re_path(r'^business/',views.business,name='business'),
     re_path(r'^profile',views.profile,name='profile'),  
-    re_path(r'^post',views.post,name='post'),  
-    re_path(r'^edit_profile',views.edit_profile,name='edit_profile'),
+    re_path(r'^post',views.post,name='post'),
+    path('create_profile/', views.CreateProfilePage.as_view(), name='create_profile'),  
+    path('edit/<int:pk>/',views.EditProfileView.as_view(), name="edit_profile"),
     path('neigborhoods/', views.neigborhoods, name='neigborhoods'), 
     path('<hood_id>/neighborhood_occupants', views.neighborhood_occupants, name='members'), 
 

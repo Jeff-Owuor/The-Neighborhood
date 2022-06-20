@@ -35,7 +35,7 @@ class Profile(models.Model):
         return self.user.username
     
     def get_absolute_url(self):
-        return reverse('index')
+        return reverse('profile')
 
 
 class Post(models.Model):

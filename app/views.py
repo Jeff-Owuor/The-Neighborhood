@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authentication import get_authorization_header
 from .serializers import UserSerializer
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView,UpdateView
 from rest_framework.response import Response
 from django.http import HttpResponseRedirect
 from .forms import NeighborhoodForm, RegisterForm,ProfileEdit,BusinessForm,PostForm,CreateProfileForm
@@ -12,6 +12,7 @@ from .models import Neighborhood, Profile,Business,Post
 from django.contrib.auth.models import User,auth
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 
 
 # Create your views here.
@@ -61,28 +62,7 @@ def search_business(request):
 @login_required(login_url='signin')
 def profile(request):
     profile = Profile.objects.get(user=request.user.id)
-    form = ProfileEdit(instance=request.user.profile)
-    form = ProfileEdit()
-    if request.method=='POST':
-        form = ProfileEdit(request.POST,request.FILES, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    return render(request, 'all_templates/profile.html',{"profile":profile,"form":form})
-
-@login_required(login_url = "signin")
-def edit_profile(request):
-    current_user = request.user
-    if request.method == 'POST':
-        form = ProfileEdit(request.POST, request.FILES)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = current_user
-            profile.save()
-        return HttpResponseRedirect('profile')
-    else:
-        form = ProfileEdit()
-    return render(request, 'all_templates/edit_profile.html', {"form": form})
+    return render(request, 'all_templates/profile.html',{"profile":profile})
 
 def business(request):
     user = request.user
@@ -107,7 +87,9 @@ def businessUpload(request):
     return render(request, 'all_templates/upload_business.html', context)
 
 def post(request):
-    return render(request, 'all_templates/post.html')
+    user = request.user
+    post = Post.objects.filter(hood=user.profile.neighborhood).all()
+    return render(request, 'all_templates/post.html',{"posts":post})
 
 def postUpload(request):
     current_user  = request.user
@@ -163,8 +145,19 @@ def leave_neighborhood(request, id):
     request.user.profile.save()
     return redirect('neigborhoods')
 
-def neighborhood_occupants(request, neighborhood_id):
-    hood = Neighborhood.objects.get(id=neighborhood_id)
-    members = Profile.objects.filter(neighbourhood=hood)
-    return render(request, 'members.html', {'members': members})
 
+
+class CreateProfilePage(CreateView):
+    model = Profile
+    form_class = CreateProfileForm
+    template_name = 'all_templates/create_user_profile.html'
+    
+    def form_valid(self,form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+class EditProfileView(UpdateView):
+    model = Profile
+    template_name = 'all_templates/edit_profile.html'
+    fields = ['bio','username','email','image']
+    success_url = reverse_lazy('profile')
