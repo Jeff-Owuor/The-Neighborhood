@@ -23,6 +23,5 @@ urlpatterns = [
     re_path(r'^business',views.business,name='business'),
     re_path(r'^profile',views.profile,name='profile'),  
     re_path(r'^edit_profile',views.edit_profile,name='edit_profile'), 
-    path(r'^tinymce/', include('tinymce.urls')),
 
 ]
