@@ -13,9 +13,7 @@
             {% for business in business %}
             <div class="col-md-4">
                 <div class="card" style="width: 100;background-color:  #e6e6ea; padding: 10px;">
-                    {% if image.image %}
                         <img src="{{business.image.url}}" style="width: 100%;" alt="">
-                    {% endif %}
                     <div class="card-body">
                         <h3>Name: {{ business.name }}</h3>
                         <p>Email: {{ business.email }}</p>
