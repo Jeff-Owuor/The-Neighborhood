@@ -23,9 +23,9 @@ from decouple import config,Csv
 
 
 cloudinary.config( 
-  cloud_name = config('CLOUDINARY_CLOUD_NAME'),
-  api_key =  config('CLOUDINARY_API_KEY'),
-  api_secret =  config('CLOUDINARY_API_SECRET')
+  cloud_name = "spectrejeff", 
+  api_key = "589679937397575", 
+  api_secret = "MemITtt3zoIDdRFIz4UOsVfZ3DE" 
 )
 
 MODE=config("MODE", default="dev")

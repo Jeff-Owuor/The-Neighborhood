@@ -8,8 +8,10 @@
         <div class="col-md-4">
             <div class="card" style="width: 28rem;">
                 <div class="card-body">
-                  <h5 class="card-title">{{ hood.neighborhood_name }}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{{hood.neighborhood_location}}</h6>
+                  <h4 class="card-title">{{ hood.neighborhood_name }}</h4>
+                  <h5 class="card-subtitle mb-2 text-muted">{{hood.neighborhood_location}}</h5>
+                  <h5 class="card-subtitle">Police contact:{{ hood.police_number }}</h5>
+                  <h5 class="card-subtitle">Medics:{{ hood.health_tell }}</h5>
                   {% if request.user.profile.neighborhood == hood %}
                     <a href="{% url 'leave-hood' hood.id %}" class="btn btn-danger btn-sm">Leave Hood</a>
                     {% elif not request.user.profile.neighborhood %}
