@@ -71,7 +71,7 @@ def business(request):
 
 def businessUpload(request):
     current_user  = request.user
-    hood = Neighborhood.objects.get(id=current_user.profile.neighborhood)
+    hood = Neighborhood.objects.get(id=current_user.profile.neighborhood.neighborhood_id)
     profile_instance = Profile.objects.get(user=current_user)
     if request.method =='POST':
         form = BusinessForm(request.POST, request.FILES)
