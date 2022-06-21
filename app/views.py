@@ -71,11 +71,13 @@ def business(request):
 
 def businessUpload(request):
     current_user  = request.user
+    hood = Neighborhood.objects.get(id=current_user.profile.neighborhood)
     profile_instance = Profile.objects.get(user=current_user)
     if request.method =='POST':
         form = BusinessForm(request.POST, request.FILES)
         if form.is_valid():
             project = form.save(commit=False)
+            project.neighborhood = hood
             project.user = profile_instance
             project.save()
         return redirect('business')
