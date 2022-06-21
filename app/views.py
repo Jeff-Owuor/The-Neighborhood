@@ -124,7 +124,7 @@ def create_hood(request):
             hood = form.save(commit=False)
             hood.admin = request.user.profile
             hood.save()
-            return redirect('index')
+            return redirect('create_hood')
     else:
         form = NeighborhoodForm()
     return render(request, 'all_templates/newhood_form.html', {'form': form})
