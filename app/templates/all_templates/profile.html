@@ -13,7 +13,7 @@
         <div class="card-body">
             <h3 class="text-sm-centre"><b>{{ profile.user }}</b></h3>
             <h4 class="text-sm-centre">Email: <b>{{ profile.email }}</b></p>
-            <h4 class="text-sm-centre">Neighbourhood: <b>{{ profile.neighborhood }}</b></h4>
+            <h4 class="text-sm-centre">Neighbourhood: <b>{{ profile.neighborhood.neighborhood_name }}</b></h4>
             {% if profile.bio %}
             <p>{{ profile.bio }}</p>
             {% else %}
