@@ -75,18 +75,20 @@
         <div class="topnav">
           <div class="navbar-header">
             <a class="navbar-brand" href="{% url 'index' %}">HOME</a>
-            <a class="navbar-brand" href="{% url 'neigborhoods' %}">HOOD</a>
                 
             {% if user.profile %}
             <a class="navbar-brand" href="{% url 'profile' %}">PROFILE</a>
+            <a class="navbar-brand" href="{% url 'neigborhoods' %}">HOOD</a>
             {%else%}
             <a class="navbar-brand" href="{% url 'create_profile' %}">CREATE PROFILE</a>
              {%endif%}     
 
             
             <a class="navbar-brand" href="{% url 'signin' %}">SIGNOUT</a>
+            {% if user.profile.neighborhood %}
             <a class="navbar-brand" href="{% url 'business' %}">BUSINESS</a>
             <a class="navbar-brand" href="{% url 'post' %}">POST</a>
+            {% endif %}
         </div>
       {% endif %}
       <div class="search-container">
